@@ -1,0 +1,34 @@
+# Three identical nodes on one private network.
+# Inside the network a node reaches another one by its service name (e.g. node2:8000).
+name: hello-cluster
+
+services:
+  node1:
+    build: .
+    environment:
+      NODE_ID: node1
+      PEERS: "node2:8000,node3:8000"
+      PEER_TIMEOUT: "${PEER_TIMEOUT:-1.0}"
+    ports:
+      - "8001:8000"     # host:container -> http://localhost:8001
+    stop_grace_period: 3s
+
+  node2:
+    build: .
+    environment:
+      NODE_ID: node2
+      PEERS: "node1:8000,node3:8000"
+      PEER_TIMEOUT: "${PEER_TIMEOUT:-1.0}"
+    ports:
+      - "8002:8000"
+    stop_grace_period: 3s
+
+  node3:
+    build: .
+    environment:
+      NODE_ID: node3
+      PEERS: "node1:8000,node2:8000"
+      PEER_TIMEOUT: "${PEER_TIMEOUT:-1.0}"
+    ports:
+      - "8003:8000"
+    stop_grace_period: 3s
