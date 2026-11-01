@@ -1,0 +1,11 @@
+{
+  "student_name": "Erenalp Tunay",
+  "student_no": "220206041",
+  "logical_cpus": 8,
+  "sec_per_million": 0.0947,
+  "platform": "macOS-27.0.1-arm64-arm-64bit",
+  "python": "3.10.18",
+  "n_slices": 21000000,
+  "grain_large": 1000,
+  "cpu_limit": 1.0
+}
