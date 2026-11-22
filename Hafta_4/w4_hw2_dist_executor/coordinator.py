@@ -118,7 +118,19 @@ def send_with_retry(send, url, body, *, retries=DEFAULT_RETRIES,
         URL'nin içindedir, işçi tekrarı bu kimlikle tanır.
     """
     # >>> ÖĞRENCİ KODU BAŞLANGICI (TODO 4)
-    raise NotImplementedError("TODO 4: send_with_retry")
+    last_error = None
+    for attempt in range(1 + retries):
+        try:
+            status, data = send(url, body, timeout)
+        except (TimeoutError, ConnectionError) as e:
+            last_error = type(e).__name__
+        else:
+            if status not in RETRYABLE_STATUS:
+                return Outcome(status, data, attempt + 1, None)
+            last_error = f"HTTP {status}"
+        if attempt < retries:
+            sleep(backoff_delay(attempt, base, cap, rng))
+    return Outcome(None, None, 1 + retries, last_error)
     # <<< ÖĞRENCİ KODU SONU (TODO 4)
 
 
