@@ -88,7 +88,7 @@ def assign_workers(n_tasks, workers):
     sayıları arasındaki fark en fazla 1 olur.
     """
     # >>> ÖĞRENCİ KODU BAŞLANGICI (TODO 3)
-    raise NotImplementedError("TODO 3: assign_workers")
+    return [workers[i % len(workers)] for i in range(n_tasks)]
     # <<< ÖĞRENCİ KODU SONU (TODO 3)
 
 
