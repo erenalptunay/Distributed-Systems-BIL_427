@@ -1,0 +1,10 @@
+{
+  "student_name": "Erenalp Tunay",
+  "student_no": "220206041",
+  "N_TASKS": 41,
+  "LOSE_RATE": 0.2,
+  "DELAY_MS": 240,
+  "TIMEOUT_SHORT": 0.144,
+  "SEED": 2454,
+  "created": "2026-11-22T20:20:32"
+}

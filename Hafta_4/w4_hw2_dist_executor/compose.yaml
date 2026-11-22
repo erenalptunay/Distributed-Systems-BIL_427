@@ -1,0 +1,33 @@
+# compose.yaml — BİL 427 HW2: üç işçi konteyneri (VERİLEN DOSYA, değiştirmeyin)
+#
+#   docker compose up -d      işçileri arka planda başlat
+#   docker compose ps         durumlarını göster
+#   docker compose logs       işçilerin olay kayıtlarını göster
+#   docker compose restart    worker.py değişince işçileri yeniden başlat
+#   docker compose down       işçileri durdur ve sil
+#
+# worker.py konteynere kopyalanmaz, salt okunur bağlanır (bind mount): dosyayı
+# değiştirdiğinizde imajı yeniden oluşturmanız gerekmez, "restart" yeterlidir.
+# Portlar yalnızca bu bilgisayardan erişilebilir (127.0.0.1).
+name: bil427-hw2
+
+x-worker: &worker
+  image: python:3.12-slim
+  working_dir: /app
+  volumes:
+    - ./worker.py:/app/worker.py:ro
+  command: ["python", "-u", "worker.py"]
+
+services:
+  worker1:
+    <<: *worker
+    environment: {WORKER_ID: worker1, PORT: "8000"}
+    ports: ["127.0.0.1:8001:8000"]
+  worker2:
+    <<: *worker
+    environment: {WORKER_ID: worker2, PORT: "8000"}
+    ports: ["127.0.0.1:8002:8000"]
+  worker3:
+    <<: *worker
+    environment: {WORKER_ID: worker3, PORT: "8000"}
+    ports: ["127.0.0.1:8003:8000"]
