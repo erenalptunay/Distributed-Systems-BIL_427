@@ -128,7 +128,20 @@ class TaskTable:
           * dedup False iken her istek görevi yeniden yürütür (Deney 3a).
         """
         # >>> ÖĞRENCİ KODU BAŞLANGICI (TODO 1)
-        raise NotImplementedError("TODO 1: TaskTable.put")
+        with self.lock:
+            existing = self.records.get(task_id)
+            if self.config["dedup"] and existing is not None:
+                if existing["op"] == op and existing["x"] == x:
+                    self.count("deduplicated")
+                    return 200, existing, True
+                self.count("conflicts")
+                return 409, {"error": "aynı task_id farklı gövdeyle geldi"}, False
+            result = self.compute(op, x)
+            record = {"task_id": task_id, "op": op, "x": x,
+                      "result": result, "worker": WORKER_ID}
+            self.records[task_id] = record
+            status = 201 if existing is None else 200
+            return status, record, False
         # <<< ÖĞRENCİ KODU SONU (TODO 1)
 
 
