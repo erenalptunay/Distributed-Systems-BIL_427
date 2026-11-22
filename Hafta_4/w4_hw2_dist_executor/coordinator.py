@@ -74,7 +74,8 @@ def backoff_delay(attempt, base=BACKOFF_BASE, cap=BACKOFF_CAP, rng=random):
     kendi rng nesnelerini verir.
     """
     # >>> ÖĞRENCİ KODU BAŞLANGICI (TODO 2)
-    raise NotImplementedError("TODO 2: backoff_delay")
+    upper = min(cap, base * 2 ** attempt)
+    return rng.uniform(0, upper)
     # <<< ÖĞRENCİ KODU SONU (TODO 2)
 
 
